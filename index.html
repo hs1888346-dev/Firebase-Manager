@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Firebase Maneger</title>
+
+<style>
+body{font-family:sans-serif;margin:20px;background:#f7f9fc;}
+.container{max-width:920px;margin:0 auto;display:flex;gap:20px;align-items:flex-start;}
+.left{width:360px;}
+.right{flex:1;}
+.box{
+  border:1px solid #e2e8f0;
+  padding:14px;
+  border-radius:10px;
+  background:#fff;
+  box-shadow: 0 2px 6px rgba(16,24,40,0.03);
+  margin-bottom:20px;
+}
+input,select,button,textarea{
+  width:100%;
+  padding:10px;
+  margin-top:8px;
+  border-radius:8px;
+  border:1px solid #d1d5db;
+  box-sizing:border-box;
+}
+textarea{min-height:100px; font-family:monospace;}
+button{
+  background:#0b63ff;
+  color:#fff;
+  font-weight:600;
+  border:none;
+  cursor:pointer;
+}
+.small{width:auto;padding:6px 10px;font-size:14px;border-radius:6px}
+.row{display:flex;gap:8px}
+.hint{font-size:13px;color:#6b7280;margin-top:6px}
+.listItem{display:flex;align-items:center;justify-content:space-between;padding:8px;border-radius:6px;border:1px solid #f1f5f9;margin-bottom:6px;background:#fbfdff;cursor:pointer}
+.iconName{display:flex;align-items:center;gap:10px}
+.actions button{margin-left:6px}
+h2,h3{margin:0 0 8px 0}
+.labelSmall{font-size:13px;color:#374151;margin-top:6px}
+</style>
+</head>
+
+<body>
+
+<h2>SR Killer Firebase — File Manager</h2>
+
+<div class="container">
+  <div class="left">
+    <div class="box">
+      <label>Mode</label>
+      <select id="mode"></select>
+
+      <label>Database URL</label>
+      <input id="db" placeholder="https://PROJECT-default-rtdb.firebaseio.com">
+
+      <label>Storage Bucket</label>
+      <input id="bucket" placeholder="PROJECT.appspot.com">
+
+      <div id="authBox" style="display:none">
+        <label>API Key</label>
+        <input id="key" placeholder="API Key">
+
+        <label>Auth Domain</label>
+        <input id="domain" placeholder="PROJECT.firebaseapp.com">
+
+        <label>Project ID</label>
+        <input id="pid" placeholder="PROJECT_ID">
+
+        <label>App ID</label>
+        <input id="appid" placeholder="1:...:web:...">
+      </div>
+
+      <button id="btnImport">Import Firebase JSON (file)</button>
+
+      <div class="labelSmall">Or paste Firebase Web config JSON below and click Import:</div>
+      <textarea id="jsonImportText" placeholder='Paste full firebase config object or web app config JSON here. Example: {"apiKey":"...","authDomain":"...","projectId":"...","storageBucket":"...","databaseURL":"...","appId":"..."}'></textarea>
+      <button id="btnImportRaw">Import From Text</button>
+
+      <button id="start">Start</button>
+
+      <div class="hint">Import google-services.json (file) or paste web config JSON then Start.</div>
+    </div>
+
+    <div class="box" id="loginBox" style="display:none">
+      <h3>Login / Register</h3>
+
+      <input id="username" placeholder="Username (register only)">
+      <input id="email" placeholder="Email">
+      <input id="pass" placeholder="Password" type="password">
+
+      <div class="row" style="margin-top:8px">
+        <button id="btnLogin" class="small">Login</button>
+        <button id="btnReg" class="small">Register</button>
+      </div>
+      <p id="authMsg" class="hint"></p>
+    </div>
+
+    <div class="box">
+      <h3>Current User</h3>
+      <div id="userName">Hi, User</div>
+      <div class="hint" id="userEmail"></div>
+      <div style="margin-top:8px">
+        <button id="btnLogout" class="small" style="background:#ef4444">Logout</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="right">
+    <div class="box">
+      <h3>Realtime Database (root)</h3>
+      <div id="dbList"></div>
+      <div style="margin-top:8px" class="row">
+        <button id="btnAddDb" class="small">Add Node</button>
+      </div>
+    </div>
+
+    <div class="box">
+      <h3>Storage (root)</h3>
+      <div style="margin-bottom:8px" class="row">
+        <button id="btnListStorage" class="small">List</button>
+        <button id="btnUploadFile" class="small">Upload</button>
+      </div>
+      <div id="stList"></div>
+    </div>
+
+    <div class="box">
+      <h3>Logs</h3>
+      <div id="logArea" style="max-height:180px;overflow:auto;font-size:13px;color:#374151"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+<!-- Your JS -->
+<script src="js/ui.js"></script>
+<script src="js/import.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/db.js"></script>
+<script src="js/storage.js"></script> <!-- must come before app.js -->
+<script src="js/app.js"></script>     <!-- start button uses loadStorage -->
+
+</body>
+</html>
